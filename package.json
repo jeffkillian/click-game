@@ -1,0 +1,29 @@
+{
+  "name": "click_game",
+  "version": "1.0.0",
+  "description": "A simple clicking game",
+  "main": "./src/js/app.jsx",
+  "scripts": {
+    "start": "concurrently --kill-others \"npm run server\" \"npm run watch:js\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "http-server -p 8001",
+    "watch:js": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.2.1",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "concurrently": "^4.1.0",
+    "webpack": "^4.27.1",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
+    "babel-loader": "^8.0.4",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "webpack-cli": "^3.1.2"
+  }
+}

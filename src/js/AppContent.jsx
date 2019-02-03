@@ -1,12 +1,13 @@
 
 
 import React from "react"
+import axios from "axios"
+
 
 class AppContent extends React.Component {
 
   constructor(options){
     super(options)
-    var hi = this;
     this.SQUAREDIM = 100
     this.state = {
       gameState: "ready",
@@ -17,7 +18,6 @@ class AppContent extends React.Component {
       timeElapsed: 0,
       highScore: null
     }
-    this.scores = []
   }
 
   render() {
@@ -36,13 +36,22 @@ class AppContent extends React.Component {
   }
 
   renderEndScreen(){
-    return(
-      <div>
-        <div>Time elapsed: {this.renderTimeElapsed()}</div>
+    const divStyle = {
+      position: "absolute",
+      "background": "grey",
+      width:"100px",
+      height:"100px",
+      top:"40%",
+      left: "50%",
+      padding: "10px"
+    }
 
+    return(
+      <div style={divStyle} >
+        <div>Time elapsed: {this.renderTimeElapsed()}</div>
         <div>Best Score: {this.formatTime(this.state.highScore)}</div>
         <div onClick={this.resetGame}>
-          Restart
+          Reset
         </div>
       </div>
     )
@@ -55,18 +64,20 @@ class AppContent extends React.Component {
   formatTime(time){
     return (time/1000).toFixed(3)
   }
+  
   renderBeginScreen() {
     const divStyle = {
       position: "absolute",
       "background": "grey",
-      width:"100px",
-      height:"100px",
-      top:"50%",
-      left: "50%"
+      width:"200px",
+      height:"200px",
+      top:"40%",
+      left: "50%",
+      padding: "10px"
     }
     return (
       <div style={divStyle} onClick={this.begin}>
-      Start the game
+        Start the game
       </div>
     )
   }
@@ -79,9 +90,9 @@ class AppContent extends React.Component {
       height:`${this.SQUAREDIM}px`,
       top:this.state.y,
       left: this.state.x,
-      "font-size": "40px",
+      "fontSize": "40px",
       color: "white",
-      "text-align": "center"
+      "textAlign": "center"
     }
     return (
       <div style={divStyle} onClick={this.clickSuccess}>
@@ -103,8 +114,7 @@ class AppContent extends React.Component {
   }
 
   endGame = () => {
-    this.scores.push(this.state.timeElapsed)
-    console.log(this.scores)
+    this.postScore(this.state.timeElapsed/1000)
     if (this.state.highScore === null || 
         this.state.timeElapsed < this.state.highScore) {
           this.setState({
@@ -139,7 +149,11 @@ class AppContent extends React.Component {
     })
   }
 
-
+  postScore(score){
+    axios.post("http://localhost:3000/postScore", {
+      score: score
+    })
+  }
 }
 
 export default AppContent

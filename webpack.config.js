@@ -21,4 +21,4 @@ var path = require('path');
         ]
       },
       devtool: 'source-map',
- };
+  }

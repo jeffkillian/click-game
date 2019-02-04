@@ -1,7 +1,7 @@
 var path = require('path');
  var webpack = require('webpack');
  module.exports = {
-    mode:"development",
+    //mode:"development",
      entry: './src/js/app',
      output: {
          filename: 'bundle.js'
@@ -20,5 +20,5 @@ var path = require('path');
           }
         ]
       },
-      devtool: 'source-map',
+      //devtool: 'source-map',
   }

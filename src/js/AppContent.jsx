@@ -16,8 +16,10 @@ class AppContent extends React.Component {
       y: 200,
       startTime: "",
       timeElapsed: 0,
-      highScore: null
+      highScore: null,
+      highScores: []
     }
+    this.getHighScores()
   }
 
   render() {
@@ -39,8 +41,8 @@ class AppContent extends React.Component {
     const divStyle = {
       position: "absolute",
       "background": "grey",
-      width:"100px",
-      height:"100px",
+      width:"200px",
+      height:"200px",
       top:"40%",
       left: "50%",
       padding: "10px"
@@ -48,11 +50,15 @@ class AppContent extends React.Component {
 
     return(
       <div style={divStyle} >
-        <div>Time elapsed: {this.renderTimeElapsed()}</div>
-        <div>Best Score: {this.formatTime(this.state.highScore)}</div>
         <div onClick={this.resetGame}>
           Reset
         </div>
+
+        <div>Time elapsed: {this.renderTimeElapsed()}</div>
+        <div>Best Score: {this.formatTime(this.state.highScore)}</div>
+        
+
+        {this.renderHighScores()}
       </div>
     )
   }
@@ -69,8 +75,8 @@ class AppContent extends React.Component {
     const divStyle = {
       position: "absolute",
       "background": "grey",
-      width:"200px",
-      height:"200px",
+      width:`200px`,
+      height:`200px`,
       top:"40%",
       left: "50%",
       padding: "10px"
@@ -78,6 +84,25 @@ class AppContent extends React.Component {
     return (
       <div style={divStyle} onClick={this.begin}>
         Start the game
+        {this.renderHighScores()}
+      </div>
+    )
+  }
+
+  renderHighScores(){
+    return (
+      <div>
+        High Scores:
+        <div>
+          {this.state.highScores.map(function(score, index) {
+            return (
+              <div key={index}>
+                <span >{index+1}. </span>
+                <span>{score.score}</span>
+              </div>
+            )
+          })}
+        </div>
       </div>
     )
   }
@@ -150,8 +175,25 @@ class AppContent extends React.Component {
   }
 
   postScore(score){
-    axios.post("http://localhost:3000/postScore", {
+    const thisApp = this;
+    //axios.post("https://desolate-spire-43036.herokuapp.com/postScore", {
+    axios.post("https://desolate-spire-43036.herokuapp.com/postScore", {
       score: score
+    }).then(
+      thisApp.getHighScores()
+    )
+  }
+
+  getHighScores(){
+    const thisApp = this;
+    axios.get("http://localhost:3000/highScores").then(function(response) {
+      thisApp.setHighScores(response.data)
+    })
+  }
+
+  setHighScores(scores){
+    this.setState({
+      highScores: scores
     })
   }
 }

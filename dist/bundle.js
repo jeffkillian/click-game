@@ -25115,8 +25115,12 @@ function (_React$Component) {
       y: 200,
       startTime: "",
       timeElapsed: 0,
-      highScore: null
+      highScore: null,
+      highScores: []
     };
+
+    _this.getHighScores();
+
     return _this;
   }
 
@@ -25138,17 +25142,17 @@ function (_React$Component) {
       var divStyle = {
         position: "absolute",
         "background": "grey",
-        width: "100px",
-        height: "100px",
+        width: "200px",
+        height: "200px",
         top: "40%",
         left: "50%",
         padding: "10px"
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: divStyle
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Time elapsed: ", this.renderTimeElapsed()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Best Score: ", this.formatTime(this.state.highScore)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         onClick: this.resetGame
-      }, "Reset"));
+      }, "Reset"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Time elapsed: ", this.renderTimeElapsed()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Best Score: ", this.formatTime(this.state.highScore)), this.renderHighScores());
     }
   }, {
     key: "renderTimeElapsed",
@@ -25175,7 +25179,16 @@ function (_React$Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: divStyle,
         onClick: this.begin
-      }, "Start the game");
+      }, "Start the game", this.renderHighScores());
+    }
+  }, {
+    key: "renderHighScores",
+    value: function renderHighScores() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "High Scores:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.highScores.map(function (score, index) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: index
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, index + 1, ". "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, score.score));
+      })));
     }
   }, {
     key: "renderSquare",
@@ -25199,8 +25212,25 @@ function (_React$Component) {
   }, {
     key: "postScore",
     value: function postScore(score) {
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("http://localhost:3000/postScore", {
+      var thisApp = this; //axios.post("https://desolate-spire-43036.herokuapp.com/postScore", {
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("https://desolate-spire-43036.herokuapp.com/postScore", {
         score: score
+      }).then(thisApp.getHighScores());
+    }
+  }, {
+    key: "getHighScores",
+    value: function getHighScores() {
+      var thisApp = this;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("http://localhost:3000/highScores").then(function (response) {
+        thisApp.setHighScores(response.data);
+      });
+    }
+  }, {
+    key: "setHighScores",
+    value: function setHighScores(scores) {
+      this.setState({
+        highScores: scores
       });
     }
   }]);

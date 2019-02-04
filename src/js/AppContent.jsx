@@ -176,7 +176,6 @@ class AppContent extends React.Component {
 
   postScore(score){
     const thisApp = this;
-    //axios.post("https://desolate-spire-43036.herokuapp.com/postScore", {
     axios.post("https://desolate-spire-43036.herokuapp.com/postScore", {
       score: score
     }).then(
@@ -186,7 +185,7 @@ class AppContent extends React.Component {
 
   getHighScores(){
     const thisApp = this;
-    axios.get("http://localhost:3000/highScores").then(function(response) {
+    axios.get("https://desolate-spire-43036.herokuapp.com/highScores").then(function(response) {
       thisApp.setHighScores(response.data)
     })
   }
